@@ -1,12 +1,16 @@
 from trade_types import BookL1 as CBookL1
-from utils import BookL1
+from utils import BookL1, BookL1Struct
 import timeit
+
 
 def create_book_l1():
     return BookL1("binance", "BTC/USDT", 30000.0, 30001.0, 1.5, 2.0)
 
 def create_cbook_l1():
     return CBookL1("binance", "BTC/USDT", 30000.0, 30001.0, 1.5, 2.0)
+
+def create_sbook_l1():
+    return BookL1Struct("binance", "BTC/USDT", 30000.0, 30001.0, 1.5, 2.0)
 
 
 def access_book_l1(book):
@@ -18,7 +22,7 @@ def access_book_l1(book):
     ask_size = book.ask_size
     return exchange, symbol, bid, ask, bid_size, ask_size
 
-def run_benchmark(class_type, create_func, iterations=1000000):
+def run_benchmark(class_type, create_func, iterations=10000000):
     creation_time = timeit.timeit(create_func, number=iterations)
     
     instance = create_func()
@@ -32,3 +36,4 @@ def run_benchmark(class_type, create_func, iterations=1000000):
 if __name__ == "__main__":
     run_benchmark("Python BookL1", create_book_l1)
     run_benchmark("Cython CBookL1", create_cbook_l1)
+    run_benchmark("msgspec BookL1Struct", create_sbook_l1)
