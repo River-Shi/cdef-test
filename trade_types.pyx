@@ -1,5 +1,6 @@
+cimport cython
 
-
+@cython.freelist(128)
 cdef class BookL1:
     cdef readonly str exchange
     cdef readonly str symbol
